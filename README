@@ -1,0 +1,13 @@
+Disclaimer
+----------
+PHP-MVC is an MVC framework written for PHP 5.3. It is in very early development (it's being written alongside a web application) but is hoped to develop into a full framework in the process of creating said web app. Because of this it's wise to take the framework with a pinch of salt - nearly all the classes are documented and most of the core components work properly but there will only be as much documentation as is necessary to configure the framework. A sample app is coming soon.
+
+PHP-MVC requires PHP 5.3, since it takes advantage of namespaces and other 5.3 feautres. Database support is limited to MySQL (using Mysqli) and only has support for prepared statements. A multi-platform query-builder is planned.
+
+Inspiration and aims
+--------------------
+This framework is written in mind of the larger, monolithic-stlye frameworks and the tiny "micro"-frameworks available. It aims to be about half-way between these extremes: containing enough libraries to write a fully capable web app yet not being restricted by desires to be as compact as possible. The framework aims to be as decoupled as possible, so that you can use as many or as few components as you like.
+
+As far as inspiration goes, this PHP-MVC is probably most like the Zend Framework - it has a similar controller and model API.
+
+If you decide to make something using PHP-MVC let me know, similarly if you have any ideas, requests or things you'd like the framework to do differently from others I'm interested :)
