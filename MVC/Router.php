@@ -31,7 +31,7 @@ class Router
      * Array of special maps for specific URIs
      * @var array
      */
-    private $routes = array();
+    public $routes = array();
 
     /**
      * Data determined from examing the URI
@@ -62,7 +62,8 @@ class Router
         if (count($this->routes) != 0) {
             foreach ($this->routes as $name => $route) {
                 // If a match is found break out of the loop
-                if ($variables = $route['route']->match($this->uri)) {
+                $variables = $route['route']->match($this->uri);
+                if(is_array($variables)) {
                     $match = $name;
                     break;
                 }
