@@ -45,7 +45,6 @@ class Ini extends \MVC\Config
      */
     protected function init() {
         $this->load();
-        $this->replaceConstants();
     }
 
     /**
@@ -66,7 +65,7 @@ class Ini extends \MVC\Config
         }
 
         // Load in and parse the ini file
-        $this->file = parse_ini_file($this->path);
+        $file = parse_ini_file($this->path);
 
         /**
          * Loop through each key and split it into an array based on
@@ -78,14 +77,14 @@ class Ini extends \MVC\Config
          *       'user' => 'ross'
          *   ))
          */
-        foreach ($this->file as $key => $value) {
+        foreach ($file as $key => $value) {
             // split '.' delimited keys as arrays
             if (strpos($key, '.')) {
                 // Explode based on periods and keep the last element as the final key
                 $keys = explode('.', $key);
-                $key = array_pop($keys);
+                $lastKey = array_pop($keys);
                 // Set a reference to the base array for easier appending
-                $ref =& $this->file;
+                $ref =& $file;
                 // For each key
                 for ($i = 0; $i < count($keys); $i++) {
                     // If no key exists make a new array at $ref
@@ -96,26 +95,33 @@ class Ini extends \MVC\Config
                     $ref =& $ref[$keys[$i]];
                 }
                 // Finally set the last key and value at $ref
-                $ref[$key] = $value;
+                $ref[$lastKey] = $value;
+                // And remove the old key
+                unset($file[$key]);
             }
         }
+
+        // Replace constants with values
+        $this->file = $this->replaceConstants($file);        
     }
 
     /**
      * Find and replace user constants in the ini file
      */
-    private function replaceConstants() {
+    private function replaceConstants(array $data) {
         // Get an array of constants grouped into ext/php/user etc.
         $constants = get_defined_constants(true);
 
         // Find and replace in every value
-        foreach ($this->file as $key => $value) {
-            $this->file[$key] = str_replace(
+        foreach ($data as $key => $value) {
+            $data[$key] = str_replace(
                 array_keys($constants['user']), 
                 array_values($constants['user']), 
                 $value
             );
         }
+
+        return $data;
     }
 
     /**

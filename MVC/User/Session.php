@@ -67,7 +67,7 @@ class Session
      * @return  string  Session key
      */
     private static function generateSessionKey($userId) {
-        return sha1(self::salts['session_key'] . time() . $userId);
+        return sha1(self::$salts['session_key'] . time() . $userId);
     }
 
     /**
@@ -76,7 +76,7 @@ class Session
      * @return  string  Logout key
      */
     private static function generateLogoutKey($userId) {
-        return sha1(self::salts['logout_key'] . time() . $userId);
+        return sha1(self::$salts['logout_key'] . time() . $userId);
     }
 
     /**
