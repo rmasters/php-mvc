@@ -10,6 +10,8 @@
  */
 
 namespace MVC\Log\Adapter;
+use MVC\Exception as Exception;
+use MVC\Log\Entry as Entry;
 
 /**
  * Plain-text log file
@@ -65,7 +67,7 @@ class File extends \MVC\Log\Adapter
             if ($this->autoCreate) {
                 file_put_contents($path, '');
             } else {
-                throw new \MVC\Exception("No log file found in '$path'", 0, false);
+                throw new Exception("No log file found in '$path'", 0, false);
             }
         }
 
@@ -79,7 +81,7 @@ class File extends \MVC\Log\Adapter
             if (!empty($entry)) {
                 $entry = trim($entry);
                 // Use the Filter Entry class to read logs
-                $this->entries[] = new \MVC\Log\Entry\Filter("[%logged] %message", $entry);
+                $this->entries[] = new Entry\Filter("[%logged] %message", $entry);
             }
         }
     }

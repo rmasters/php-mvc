@@ -10,6 +10,7 @@
  */
 
 namespace MVC\Config;
+use MVC\Exception as Exception;
 
 /**
  * Configuration adapter for ini files
@@ -61,7 +62,7 @@ class Ini extends \MVC\Config
 
         // Throw an exception if the path couldn't be loaded
         if (!file_exists($this->path)) {
-            throw new \MVC\Exception("Config file '$this->name' not found in '$this->path'.");
+            throw new Exception("Config file '$this->name' not found in '$this->path'.");
         }
 
         // Load in and parse the ini file
@@ -167,7 +168,7 @@ class Ini extends \MVC\Config
     public function save() {
         // If the instance wasn't made writable when instatiated
         if (!$this->writable) {
-            throw new \MVC\Exception("You must instantiate the config instance with \$writable set to true to save.");
+            throw new Exception("You must instantiate the config instance with \$writable set to true to save.");
         }
 
         // Compile the values

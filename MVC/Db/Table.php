@@ -10,6 +10,7 @@
  */
 
 namespace MVC\Db;
+use MVC\Db as Db;
 
 /**
  * Database table class
@@ -34,7 +35,7 @@ class Table
     public function __construct($adapter = null) {
         // Set the default database adapter if none supplied
         if ($adapter == null) {
-            $adapter = \MVC\Db::getDefaultAdapter();
+            $adapter = Db::getDefaultAdapter();
         }
         $this->adapter = $adapter;
     }

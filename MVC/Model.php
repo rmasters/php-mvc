@@ -49,7 +49,7 @@ abstract class Model
         $method = 'set' . ucfirst($name);
         // If no setter method is found throw an exception
         if (!method_exists($this, $method)) {
-            throw new \MVC\Exception("Can't set value for $name.");
+            throw new Exception("Can't set value for $name.");
         }
 
         $this->$method($value);
@@ -64,7 +64,7 @@ abstract class Model
         $method = 'get' . ucfirst($name);
         // If no getter method is found throw an exception
         if (!method_exists($this, $method)) {
-            throw new \MVC\Exception("Can't get value for $name.");
+            throw new Exception("Can't get value for $name.");
         }
 
         return $this->$method();

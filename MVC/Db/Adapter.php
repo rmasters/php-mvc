@@ -10,6 +10,7 @@
  */
 
 namespace MVC\Db;
+use MVC\Exception as Exception;
 
 /**
  * Abstract database adapter

@@ -10,6 +10,7 @@
  */
 
 namespace MVC\Db\Adapter;
+use \MVC\Exception as Exception;
 
 /**
  * MySQLi database adapter
@@ -32,7 +33,7 @@ class Mysqli extends \MVC\Db\Adapter
 
         // Forward connection errors
         if (mysqli_connect_errno()) {
-            throw new \MVC\Exception(mysqli_error(), mysqli_errno());
+            throw new Exception(mysqli_error(), mysqli_errno());
         }
     }
 
@@ -45,7 +46,7 @@ class Mysqli extends \MVC\Db\Adapter
     public function prepare($query) {
         // Catch SQL errors from the prepared statement
         if (!$stmt = mysqli_prepare($this->handle, $query)) {
-            throw new \MVC\Exception($this->error());
+            throw new Exception($this->error());
         }
 
         return $stmt;

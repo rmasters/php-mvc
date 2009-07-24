@@ -10,6 +10,8 @@
  */
 
 namespace MVC\User;
+use MVC\Db as Db;
+use MVC\User as User;
 
 /**
  * User session handler
@@ -39,7 +41,7 @@ class Session
         $logoutKey = self::generateLogoutKey($user->id);
         $expiry = 1; // 1 day
         // Prepare insert
-        $session = \MVC\Db::prepare('INSERT INTO sessions (user, created, expires, session_key, logout_key) VALUES (?, NOW(), ADDDATE(NOW(), ?), ?, ?)');
+        $session = Db::prepare('INSERT INTO sessions (user, created, expires, session_key, logout_key) VALUES (?, NOW(), ADDDATE(NOW(), ?), ?, ?)');
         $session->bind_param('iiss', $userId, $expiry, $sessionKey, $logoutKey);
         $session->execute();
         $session->close();
@@ -92,7 +94,7 @@ class Session
         }
 
         // Create a user instance
-        $user = new \MVC\User($userId);
+        $user = new User($userId);
         // Return false if user not found
         if (!$user) {
             return false;
@@ -108,14 +110,14 @@ class Session
      * @param   MVC\User    $user   User instance
      * @return  bool    True if session closed successfully
      */
-    public static function close(\MVC\User $user) {
+    public static function close(User $user) {
         // Prepare params
         $userId = $user->id;
         $sessionKey = $user->sessionKey;
         $logoutKey = $user->logoutKey;
 
         // Prepare delete query
-        $delete = \MVC\Db::prepare('DELETE FROM sessions WHERE user = ? AND session_key = ? AND logout_key = ? LIMIT 1');
+        $delete = Db::prepare('DELETE FROM sessions WHERE user = ? AND session_key = ? AND logout_key = ? LIMIT 1');
         $delete->bind_param('iss', $userId, $sessionKey, $logoutKey);
         $delete->execute();
         $rows = $delete->affected_rows;
@@ -138,7 +140,7 @@ class Session
     private static function exists($userId, $sessionKey) {
         // Prepare check query
         $query = 'SELECT session_key, logout_key FROM sessions WHERE user = ? AND session_key = ? AND expires > NOW() LIMIT 1';
-        $check = \MVC\Db::prepare($query);
+        $check = Db::prepare($query);
         $check->bind_param('is', $userId, $sessionKey);
         $check->execute();
         $check->store_result();
